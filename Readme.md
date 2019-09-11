@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Евгений Христенко](https://up.htmlacademy.ru/javascript/18/user/1184773).
-* Наставник: `Неизвестно`.
+* Наставник: `Гоша Егорян`.
 
 ---
 
