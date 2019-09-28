@@ -2,8 +2,11 @@
 
 var TYPE_OF_FLAT = ['palace', 'flat', 'house', 'bungalo'];
 var CHECKOUT_CHECKIN_TIMES = ['12:00', '13:00', '14:00'];
+var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 var PIN_WIDTH = 50;
 var PIN_HEIGHT = 70;
+var map = document.querySelector('.map');
+map.classList.remove('map--faded');
 
 var getRandomElmFromArr = function (arr) {
   return arr[Math.floor(Math.random() * arr.length)];
@@ -15,12 +18,21 @@ var getRandomNumbers = function (min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
+var getRandomPhoto = function () {
+  var photos = [];
+  var photosCount = getRandomNumbers(1, 3);
+  for (var i = 0; i <= photosCount; i++) {
+    photos.push('http://o0.github.io/assets/images/tokyo/hotel' + i + '.jpg');
+  }
+  return photos;
+};
+
 var createMockArr = function () {
   var mockArr = [];
   for (var i = 0; i <= 7; i++) {
     var mock = {
       author: {
-        avatar: 'img/avatars/user0' + [i + 1] + '.png',
+        avatar: 'img/avatars/user0' + [i + 1] + '.png'
       },
       offer: {
         title: 'чистая хата',
@@ -31,9 +43,9 @@ var createMockArr = function () {
         guests: 4,
         checkin: getRandomElmFromArr(CHECKOUT_CHECKIN_TIMES),
         checkout: getRandomElmFromArr(CHECKOUT_CHECKIN_TIMES),
-        features: ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'],
+        features: getRandomElmFromArr(FEATURES),
         description: 'Описание',
-        photos: ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg']
+        photos: getRandomPhoto()
       },
       location: {
         x: getRandomNumbers(1, 1200),
