@@ -3,6 +3,7 @@
 var TYPE_OF_FLAT = ['palace', 'flat', 'house', 'bungalo'];
 var CHECKOUT_CHECKIN_TIMES = ['12:00', '13:00', '14:00'];
 var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
+var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
 var PIN_WIDTH = 50;
 var PIN_HEIGHT = 70;
 var map = document.querySelector('.map');
@@ -18,13 +19,9 @@ var getRandomNumbers = function (min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
-var getRandomPhoto = function () {
-  var photos = [];
-  var photosCount = getRandomNumbers(1, 3);
-  for (var i = 0; i <= photosCount; i++) {
-    photos.push('http://o0.github.io/assets/images/tokyo/hotel' + i + '.jpg');
-  }
-  return photos;
+var getRandomArray = function (array) {
+  var lastElement = getRandomNumbers(0, array.length);
+  return array.slice(0, lastElement);
 };
 
 var createMockArr = function () {
@@ -43,9 +40,9 @@ var createMockArr = function () {
         guests: 4,
         checkin: getRandomElmFromArr(CHECKOUT_CHECKIN_TIMES),
         checkout: getRandomElmFromArr(CHECKOUT_CHECKIN_TIMES),
-        features: getRandomElmFromArr(FEATURES),
+        features: getRandomArray(FEATURES),
         description: 'Описание',
-        photos: getRandomPhoto()
+        photos: getRandomArray(PHOTOS)
       },
       location: {
         x: getRandomNumbers(1, 1200),
