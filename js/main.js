@@ -20,8 +20,6 @@ var similarPinTemplate = document.querySelector('#pin')
   .content
   .querySelector('.map__pin');
 var mapFiltersContainer = document.querySelector('.map__filters-container');
-
-
 var getRandomElmFromArr = function (arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 };
