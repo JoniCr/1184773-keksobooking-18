@@ -13,6 +13,7 @@ var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.g
 var PIN_WIDTH = 50;
 var PIN_HEIGHT = 70;
 var map = document.querySelector('.map');
+
 var pinListElement = document.querySelector('.map__pins');
 var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
 var similarPinTemplate = document.querySelector('#pin')
@@ -134,57 +135,3 @@ var init = function () {
 };
 
 init();
-
-
-var ENTER_KEYCODE = 13;
-var mapPinMain = document.querySelector('.map__pin--main');
-var documentInputs = document.querySelectorAll('fieldset');
-var adForm = document.querySelector('.ad-form');
-var addressInput = adForm.querySelector('#address');
-
-
-function setDisabledInputs(inputs) {
-  for (var i = 0; i < inputs.length; i++) {
-    inputs[i].setAttribute('disabled', 'disabled');
-  }
-}
-
-function setActiveInputs(inputs) {
-  for (var i = 0; i < inputs.length; i++) {
-    inputs[i].removeAttribute('disabled');
-  }
-}
-
-function setInactivePinCoord() {
-  addressInput.value = Math.round(mapPinMain.offsetLeft + PIN_WIDTH / 2) + ', ' + Math.round(mapPinMain.offsetTop + PIN_HEIGHT / 2);
-}
-
-function setActivePinCoord() {
-  addressInput.value = Math.round(mapPinMain.offsetLeft + PIN_WIDTH / 2) + ', ' + Math.round(mapPinMain.offsetTop + PIN_HEIGHT);
-}
-
-function activeMap() {
-  map.classList.remove('map--faded');
-  adForm.classList.remove('ad-form--disabled');
-  setActiveInputs(documentInputs);
-  setActivePinCoord();
-}
-
-function inactiveMap() {
-  map.classList.add('map--faded');
-  adForm.classList.add('ad-form--disabled');
-  setDisabledInputs(documentInputs);
-  setInactivePinCoord();
-}
-
-inactiveMap();
-
-mapPinMain.addEventListener('mousedown', function () {
-  activeMap();
-});
-
-mapPinMain.addEventListener('keydown', function (evt) {
-  if (evt.keyCode === ENTER_KEYCODE) {
-    activeMap();
-  }
-});
