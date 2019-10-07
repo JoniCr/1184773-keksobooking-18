@@ -13,6 +13,7 @@ var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.g
 var PIN_WIDTH = 50;
 var PIN_HEIGHT = 70;
 var map = document.querySelector('.map');
+map.classList.remove('map--faded');
 var pinListElement = document.querySelector('.map__pins');
 var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
 var similarPinTemplate = document.querySelector('#pin')
@@ -141,6 +142,9 @@ var mapPinMain = document.querySelector('.map__pin--main');
 var documentInputs = document.querySelectorAll('fieldset');
 var adForm = document.querySelector('.ad-form');
 var addressInput = adForm.querySelector('#address');
+var selectRoom = adForm.querySelector('#room_number');
+var selectCapacity = adForm.querySelector('#capacity');
+var INVALID_BORDER_STYLE = '3px solid orange';
 
 
 function setDisabledInputs(inputs) {
@@ -187,4 +191,38 @@ mapPinMain.addEventListener('keydown', function (evt) {
   if (evt.keyCode === ENTER_KEYCODE) {
     activeMap();
   }
+});
+
+function checkRoomCapacity(room, capacity) {
+  room = +room;
+  capacity = +capacity;
+  if (room === 1 && capacity !== 1) {
+    return '1 комната только для 1 гостя';
+  } else if (room === 2 && (capacity < 1 || capacity > 2)) {
+    return '2 комнаты только для 1 гостя или 2 гостей';
+  } else if (room === 3 && capacity === 0) {
+    return '3 комнаты не могут использовать не для гостей';
+  } else if (room === 100 && capacity !== 0) {
+    return '100 комнат только не для гостей';
+  }
+  return '';
+}
+
+function setResultValidity(select, message) {
+  selectRoom.style.border = '';
+  selectRoom.setCustomValidity('');
+  selectCapacity.style.border = '';
+  selectCapacity.setCustomValidity('');
+  select.style.border = message ? INVALID_BORDER_STYLE : '';
+  select.setCustomValidity(message);
+}
+
+selectRoom.addEventListener('change', function (evt) {
+  var messageValidity = checkRoomCapacity(evt.target.value, selectCapacity.value);
+  setResultValidity(selectRoom, messageValidity);
+});
+
+selectCapacity.addEventListener('change', function (evt) {
+  var messageValidity = checkRoomCapacity(selectRoom.value, evt.target.value);
+  setResultValidity(selectCapacity, messageValidity);
 });
