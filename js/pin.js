@@ -4,7 +4,6 @@
   var createPin = function (advertisment) {
     var pinElement = window.data.similarPinTemplate.cloneNode(true);
 
-
     pinElement.style.left = advertisment.location.x - window.data.PIN_WIDTH / 2 + 'px';
     pinElement.style.top = advertisment.location.y - window.data.PIN_HEIGHT / 2 + 'px';
     pinElement.querySelector('img').src = advertisment.author.avatar;
@@ -24,6 +23,7 @@
 
   var advArray = window.createRentsArr(window.data.NUMBER_OF_ITEMS);
   createFragmentPins(advArray);
+
 
   var mapPinMain = document.querySelector('.map__pin--main');
 
@@ -98,4 +98,5 @@
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
   });
+
 })();
