@@ -16,7 +16,7 @@
     getRandomArray: function (array) {
       var lastElement = window.util.getRandomNumbers(1, array.length);
       return array.slice(0, lastElement);
-    }
+    },
   };
 
 })();
