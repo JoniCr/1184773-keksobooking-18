@@ -21,11 +21,18 @@
   }
 
   function setInactivePinCoord() {
+
     addressInput.value = Math.round(mapPinMain.offsetLeft + window.data.PIN_WIDTH / 2) + 'px' + ' ' + Math.round(mapPinMain.offsetTop + window.data.PIN_HEIGHT / 2) + 'px';
   }
 
   function setActivePinCoord() {
     addressInput.value = Math.round(mapPinMain.offsetLeft + window.data.PIN_WIDTH / 2) + 'px' + ' ' + Math.round(mapPinMain.offsetTop + window.data.PIN_HEIGHT) + 'px';
+
+    addressInput.value = Math.round(mapPinMain.offsetLeft + window.data.PIN_WIDTH / 2) + ', ' + Math.round(mapPinMain.offsetTop + window.data.PIN_HEIGHT / 2);
+  }
+
+  function setActivePinCoord() {
+    addressInput.value = Math.round(mapPinMain.offsetLeft + window.data.PIN_WIDTH / 2) + ', ' + Math.round(mapPinMain.offsetTop + window.data.PIN_HEIGHT);
   }
 
   function activeMap() {
