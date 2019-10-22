@@ -32,6 +32,16 @@
     }
     photoPart.appendChild(photoFragment);
 
+    var popupClose = card.querySelector('.popup__close');
+    popupClose.addEventListener('click', function () {
+      card.parentElement.removeChild(card);
+    });
+    document.addEventListener('keydown', function (evt) {
+      if (evt.keyCode === window.data.ESC_KEYCODE) {
+        card.parentElement.removeChild(card);
+      }
+    });
+
     return card;
   }
 
@@ -46,4 +56,9 @@
   };
 
   init();
+
+  window.card = {
+    createCards: createCards
+  };
+
 })();
