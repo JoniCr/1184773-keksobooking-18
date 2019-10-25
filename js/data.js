@@ -23,6 +23,8 @@
   var mapFiltersContainer = document.querySelector('.map__filters-container');
   var ENTER_KEYCODE = 13;
   var adForm = document.querySelector('.ad-form');
+  var ESC_KEYCODE = 27;
+  var popup = map.querySelector('.popup');
 
 
   window.data = {
@@ -40,7 +42,9 @@
     TYPE_OF_FLAT: TYPE_OF_FLAT,
     TYPE_OF_FLAT_RU: TYPE_OF_FLAT_RU,
     ENTER_KEYCODE: ENTER_KEYCODE,
-    adForm: adForm
+    adForm: adForm,
+    ESC_KEYCODE: ESC_KEYCODE,
+    popup: popup,
   };
 
   window.createRentsArr = function (number) {
