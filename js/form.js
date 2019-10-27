@@ -29,14 +29,12 @@
   }
 
   function activeMap() {
-    window.data.map.classList.remove('map--faded');
     window.data.adForm.classList.remove('ad-form--disabled');
     setActiveInputs(documentInputs);
     setActivePinCoord();
   }
 
   function inactiveMap() {
-    window.data.map.classList.add('map--faded');
     window.data.adForm.classList.add('ad-form--disabled');
     setDisabledInputs(documentInputs);
     setInactivePinCoord();
@@ -138,5 +136,9 @@
   typeInput.addEventListener('change', minValueChange);
 
   announcementReq();
+
+  if (window.data.map.classList.contains('map--faded')) {
+    window.data.mapFiltersContainer.setAttribute('disabled', 'disabled');
+  }
 
 })();

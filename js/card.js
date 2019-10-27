@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+
   function createCards(advertisment) {
     var card = window.data.cardTemplate.cloneNode(true);
     var photoFragment = document.createDocumentFragment();
@@ -34,31 +35,18 @@
 
     var popupClose = card.querySelector('.popup__close');
     popupClose.addEventListener('click', function () {
-      card.parentElement.removeChild(card);
+      card.remove();
     });
+
     document.addEventListener('keydown', function (evt) {
       if (evt.keyCode === window.data.ESC_KEYCODE) {
-        card.parentElement.removeChild(card);
+        card.remove();
       }
     });
 
     return card;
   }
-
-  var addCard = function (advItem) {
-    var advertisment = createCards(advItem);
-    window.data.map.insertBefore(advertisment, window.data.mapFiltersContainer);
-  };
-
-  var init = function () {
-    var advArray = window.createRentsArr(window.data.NUMBER_OF_ITEMS);
-    addCard(advArray[0]);
-  };
-
-  init();
-
   window.card = {
     createCards: createCards
   };
-
 })();
