@@ -46,7 +46,17 @@
 
     return card;
   }
+
+  var removePopup = function () {
+
+    if (window.data.popup) {
+      window.data.popup.remove();
+    }
+  };
+
+
   window.card = {
-    createCards: createCards
+    createCards: createCards,
+    removePopup: removePopup
   };
 })();
