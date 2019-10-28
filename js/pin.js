@@ -8,6 +8,13 @@
     }
   };
 
+  var removePinElements = function () {
+    var mapPinElements = document.querySelectorAll('.map__pin');
+
+    for (var i = 1; i < mapPinElements.length; i++) {
+      mapPinElements[i].remove();
+    }
+  };
   var createPin = function (advertisment) {
     var pinElement = window.data.similarPinTemplate.cloneNode(true);
 
@@ -35,7 +42,6 @@
 
     var setAddCard = function (pin) {
       var popup = document.querySelector('.popup');
-
       if (popup) {
         popup.remove();
       }
@@ -129,11 +135,10 @@
     document.addEventListener('mouseup', onMouseUp);
   });
 
-  var URL = 'https://js.dump.academy/keksobooking/data';
-
   function pageActivate() {
+    var url = 'https://js.dump.academy/keksobooking/data';
     if (window.data.map.classList.contains('map--faded')) {
-      window.load(URL, function (data) {
+      window.load(url, function (data) {
         createFragmentPins(data);
       }, function () {
         window.message.showErrorMessage();
@@ -145,5 +150,7 @@
 
   window.data.mapPinMain.addEventListener('click', pageActivate);
 
-
+  window.pin = {
+    removePinElements: removePinElements
+  };
 })();

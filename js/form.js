@@ -6,7 +6,6 @@
   var addressInput = window.data.adForm.querySelector('#address');
   var selectRoom = window.data.adForm.querySelector('#room_number');
   var selectCapacity = window.data.adForm.querySelector('#capacity');
-  var INVALID_BORDER_STYLE = 'rgba(255, 0, 0, 0.2)';
 
   function setDisabledInputs(inputs) {
     for (var i = 0; i < inputs.length; i++) {
@@ -38,6 +37,8 @@
     window.data.adForm.classList.add('ad-form--disabled');
     setDisabledInputs(documentInputs);
     setInactivePinCoord();
+    window.data.adForm.reset();
+
   }
 
   inactiveMap();
@@ -53,39 +54,24 @@
   });
 
 
-  function checkRoomCapacity(room, capacity) {
-    room = +room;
-    capacity = +capacity;
-    if (room === 1 && capacity !== 1) {
-      return '1 комната только для 1 гостя';
-    } else if (room === 2 && (capacity < 1 || capacity > 2)) {
-      return '2 комнаты только для 1 гостя или 2 гостей';
-    } else if (room === 3 && capacity === 0) {
-      return '3 комнаты не могут использовать не для гостей';
-    } else if (room === 100 && capacity !== 0) {
-      return '100 комнат только не для гостей';
+  var validateGuestNumber = function () {
+    var roomToGuestMessage = '';
+
+    if (selectRoom.value !== '100' && selectCapacity.value > selectRoom.value) {
+      roomToGuestMessage = 'количество гостей не должно превышать ' + selectRoom.value + '.';
+    } else if (selectRoom.value !== '100' && selectCapacity.value === '0') {
+      roomToGuestMessage = 'данная опция доступна только для аппартаментов со 100 комнатами.';
+    } else if (selectRoom.value === '100' && selectCapacity.value !== '0') {
+      roomToGuestMessage = 'аппартаменты на 100 комнат не предназначены для гостей.';
     }
-    return '';
-  }
 
-  function setResultValidity(select, message) {
-    selectRoom.style.border = '';
-    selectRoom.setCustomValidity('');
-    selectCapacity.style.border = '';
-    selectCapacity.setCustomValidity('');
-    select.style.border = message ? INVALID_BORDER_STYLE : '';
-    select.setCustomValidity(message);
-  }
+    selectCapacity.setCustomValidity(roomToGuestMessage);
+  };
 
-  selectRoom.addEventListener('change', function (evt) {
-    var messageValidity = checkRoomCapacity(evt.target.value, selectCapacity.value);
-    setResultValidity(selectRoom, messageValidity);
-  });
+  validateGuestNumber();
 
-  selectCapacity.addEventListener('change', function (evt) {
-    var messageValidity = checkRoomCapacity(selectRoom.value, evt.target.value);
-    setResultValidity(selectCapacity, messageValidity);
-  });
+  selectRoom.addEventListener('change', validateGuestNumber);
+  selectCapacity.addEventListener('change', validateGuestNumber);
 
   var titleInput = document.querySelector('#title');
   var priceInput = document.querySelector('#price');
@@ -140,5 +126,21 @@
   if (window.data.map.classList.contains('map--faded')) {
     window.data.mapFiltersContainer.setAttribute('disabled', 'disabled');
   }
+
+  window.data.adForm.addEventListener('submit', function (evt) {
+    var url = 'https://js.dump.academy/keksobooking';
+    window.upload(url, new FormData(window.data.adForm), function () {
+      window.message.showSuccessMessage();
+      inactiveMap();
+      window.pin.removePinElements();
+      window.data.map.classList.add('map--faded');
+      inactiveMap();
+      window.card.removePopup();
+    }, function () {
+      window.message.showErrorMessage();
+    });
+
+    evt.preventDefault();
+  });
 
 })();
