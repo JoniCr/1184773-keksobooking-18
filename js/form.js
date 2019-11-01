@@ -1,11 +1,11 @@
 'use strict';
 
 (function () {
-  var mapPinMain = document.querySelector('.map__pin--main');
   var documentInputs = document.querySelectorAll('fieldset');
   var addressInput = window.data.adForm.querySelector('#address');
   var selectRoom = window.data.adForm.querySelector('#room_number');
   var selectCapacity = window.data.adForm.querySelector('#capacity');
+  var mapFilters = document.querySelectorAll('.map__filter');
 
   function setDisabledInputs(inputs) {
     for (var i = 0; i < inputs.length; i++) {
@@ -20,41 +20,42 @@
   }
 
   function setInactivePinCoord() {
-    addressInput.value = Math.round(mapPinMain.offsetLeft + window.data.PIN_WIDTH / 2) + ', ' + Math.round(mapPinMain.offsetTop + window.data.PIN_HEIGHT / 2);
+    addressInput.value = Math.round(window.data.mapPinMain.offsetLeft + window.data.PIN_WIDTH / 2) + ', ' + Math.round(window.data.mapPinMain.offsetTop + window.data.PIN_HEIGHT / 2);
   }
 
   function setActivePinCoord() {
-    addressInput.value = Math.round(mapPinMain.offsetLeft + window.data.PIN_WIDTH / 2) + ', ' + Math.round(mapPinMain.offsetTop + window.data.PIN_HEIGHT);
+    addressInput.value = Math.round(window.data.mapPinMain.offsetLeft + window.data.PIN_WIDTH / 2) + ', ' + Math.round(window.data.mapPinMain.offsetTop + window.data.PIN_HEIGHT);
   }
 
-  function activeMap() {
+  function activateMap() {
     window.data.adForm.classList.remove('ad-form--disabled');
     setActiveInputs(documentInputs);
     setActivePinCoord();
+    setActiveInputs(mapFilters);
   }
 
-  function inactiveMap() {
+  function inactivateMap() {
     window.data.adForm.classList.add('ad-form--disabled');
     setDisabledInputs(documentInputs);
     setInactivePinCoord();
     window.data.adForm.reset();
-
+    window.data.mapPinMain.style.left = 570 + 'px';
+    window.data.mapPinMain.style.top = 375 + 'px';
+    setDisabledInputs(mapFilters);
   }
+  inactivateMap();
 
-  inactiveMap();
-
-  mapPinMain.addEventListener('mousedown', function () {
-    activeMap();
+  window.data.mapPinMain.addEventListener('mousedown', function () {
+    activateMap();
   });
 
-  mapPinMain.addEventListener('keydown', function (evt) {
-    if (evt.keyCode === window.data.ENTER_KEYCODE) {
-      activeMap();
+  window.data.mapPinMain.addEventListener('keydown', function () {
+    if (window.util.isEnterPressed) {
+      activateMap();
     }
   });
 
-
-  var validateGuestNumber = function () {
+  function validateGuestNumber() {
     var roomToGuestMessage = '';
 
     if (selectRoom.value !== '100' && selectCapacity.value > selectRoom.value) {
@@ -66,7 +67,7 @@
     }
 
     selectCapacity.setCustomValidity(roomToGuestMessage);
-  };
+  }
 
   validateGuestNumber();
 
@@ -79,7 +80,7 @@
   var checkinTime = document.querySelector('#timein');
   var checkoutTime = document.querySelector('#timeout');
 
-  function announcementReq() {
+  function makeAnnouncementRequired() {
     titleInput.setAttribute('required', 'required');
     titleInput.setAttribute('minlength', '30');
     titleInput.setAttribute('maxlength', '100');
@@ -91,7 +92,7 @@
   }
 
 
-  function minValueChange() {
+  function changeMinValue() {
     if (typeInput.value === 'bungalo') {
       priceInput.setAttribute('min', 0);
       priceInput.setAttribute('placeholder', 0);
@@ -118,10 +119,10 @@
   });
 
 
-  minValueChange();
-  typeInput.addEventListener('change', minValueChange);
+  changeMinValue();
+  typeInput.addEventListener('change', changeMinValue);
 
-  announcementReq();
+  makeAnnouncementRequired();
 
   if (window.data.map.classList.contains('map--faded')) {
     window.data.mapFiltersContainer.setAttribute('disabled', 'disabled');
@@ -131,11 +132,12 @@
     var url = 'https://js.dump.academy/keksobooking';
     window.upload(url, new FormData(window.data.adForm), function () {
       window.message.showSuccessMessage();
-      inactiveMap();
       window.pin.removePinElements();
       window.data.map.classList.add('map--faded');
-      inactiveMap();
-      window.card.removePopup();
+      inactivateMap();
+      if (window.data.popup) {
+        window.data.popup.remove();
+      }
     }, function () {
       window.message.showErrorMessage();
     });
