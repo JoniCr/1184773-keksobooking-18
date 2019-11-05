@@ -65,4 +65,5 @@
   });
 
   mapFilters.addEventListener('change', onFiltersFormChange);
+
 })();
