@@ -3,7 +3,7 @@
 
   window.util = {
 
-    getRandomElmFromArr: function (arr) {
+    getRandomElementFromArr: function (arr) {
       return arr[Math.floor(Math.random() * arr.length)];
     },
 

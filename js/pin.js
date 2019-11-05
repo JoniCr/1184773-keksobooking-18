@@ -22,10 +22,11 @@
   function createPin(advertisment) {
 
     var pinElement = window.data.similarPinTemplate.cloneNode(true);
+    var pinElementImg = pinElement.querySelector('img');
     pinElement.style.left = advertisment.location.x - window.data.PIN_WIDTH / 2 + 'px';
     pinElement.style.top = advertisment.location.y - window.data.PIN_HEIGHT / 2 + 'px';
-    pinElement.querySelector('img').src = advertisment.author.avatar;
-    pinElement.querySelector('img').salt = advertisment.offer.title;
+    pinElementImg.src = advertisment.author.avatar;
+    pinElementImg.salt = advertisment.offer.title;
 
     pinElement.addEventListener('click', function (evt) {
       setAddCard(advertisment);
@@ -58,9 +59,10 @@
 
     var fragment = document.createDocumentFragment();
     rents = rents.slice(0, PIN_QUANITY);
-    for (var i = 0; i < rents.length; i++) {
-      fragment.appendChild(createPin(rents[i]));
-    }
+    rents.forEach(function (item, index) {
+      fragment.appendChild(createPin(rents[index]));
+    });
+
     removePinElements();
     window.data.pinListElement.appendChild(fragment);
   }
@@ -100,7 +102,7 @@
 
         var pinSize = {
           width: 65,
-          height: 65 + 22
+          height: 87
         };
 
         var pinMoveLimit = {

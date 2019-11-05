@@ -10,16 +10,22 @@
   var housGuests = document.querySelector('#housing-guests');
   var LOW_PRICE = 10000;
   var HIGH_PRICE = 50000;
+  var housePrices = {
+    any: 'any',
+    middle: 'middle',
+    low: 'low',
+    high: 'high'
+  };
 
   function filterByPrice(it) {
     switch (housPrice.value) {
-      case 'any':
+      case housePrices.any:
         return true;
-      case 'middle':
+      case housePrices.middle:
         return it.offer.price > LOW_PRICE && it.offer.price < HIGH_PRICE;
-      case 'low':
+      case housePrices.low:
         return it.offer.price <= LOW_PRICE;
-      case 'high':
+      case housePrices.high:
         return it.offer.price >= HIGH_PRICE;
       default:
         return false;
@@ -38,26 +44,27 @@
     return housGuests.value === 'any' ? true : it.offer.guests.toString() === housGuests.value;
   }
 
-  function filterByFeatures(it) {
-    var checkedFeatures = featuresList.filter(function (element) {
-      return element.checked;
-    })
-      .map(function (element) {
-        return element.value;
-      });
+  function filterByFeature(it) {
 
-    var value = checkedFeatures.every(function (feature) {
-      return it.offer.features.includes(feature);
+    var features = [];
+
+    featuresList.forEach(function (element) {
+      if (element.checked) {
+        features.push(element.value);
+      }
     });
-    return value;
+
+    return features.every(function (el) {
+      return it.offer.features.includes(el);
+    });
+  }
+
+  function filterBy(data) {
+    return filterByType(data) && filterByPrice(data) && filterByRooms(data) && filterByGuests(data) && filterByFeature(data);
   }
 
   function filterData(data) {
-    return data.filter(filterByType)
-      .filter(filterByPrice)
-      .filter(filterByRooms)
-      .filter(filterByGuests)
-      .filter(filterByFeatures);
+    return data.filter(filterBy);
   }
 
   var onFiltersFormChange = window.util.debounce(function () {

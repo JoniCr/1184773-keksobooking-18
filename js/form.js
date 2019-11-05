@@ -6,6 +6,17 @@
   var selectRoom = window.data.adForm.querySelector('#room_number');
   var selectCapacity = window.data.adForm.querySelector('#capacity');
   var mapFilters = document.querySelectorAll('.map__filter');
+  var minPrices = {
+    bungalo: 0,
+    flat: 1000,
+    house: 5000,
+    palace: 10000
+  };
+  var titleInput = document.querySelector('#title');
+  var priceInput = document.querySelector('#price');
+  var typeInput = document.querySelector('#type');
+  var checkinTime = document.querySelector('#timein');
+  var checkoutTime = document.querySelector('#timeout');
 
   function setDisabledInputs(inputs) {
     for (var i = 0; i < inputs.length; i++) {
@@ -74,40 +85,33 @@
   selectRoom.addEventListener('change', validateGuestNumber);
   selectCapacity.addEventListener('change', validateGuestNumber);
 
-  var titleInput = document.querySelector('#title');
-  var priceInput = document.querySelector('#price');
-  var typeInput = document.querySelector('#type');
-  var checkinTime = document.querySelector('#timein');
-  var checkoutTime = document.querySelector('#timeout');
-
   function makeAnnouncementRequired() {
     titleInput.setAttribute('required', 'required');
     titleInput.setAttribute('minlength', '30');
     titleInput.setAttribute('maxlength', '100');
-
+    // (type', 'number') всеровно не даст отправить с буквами и укажет на конкретную ошибку. Поэтому UX не становиться хуже.
     priceInput.setAttribute('required', 'required');
     priceInput.setAttribute('type', 'number');
-    priceInput.setAttribute('onkeydown', 'return event.keyCode !== 69');
     priceInput.setAttribute('max', '1000000');
   }
 
 
   function changeMinValue() {
     if (typeInput.value === 'bungalo') {
-      priceInput.setAttribute('min', 0);
-      priceInput.setAttribute('placeholder', 0);
+      priceInput.setAttribute('min', minPrices.bungalo);
+      priceInput.setAttribute('placeholder', minPrices.bungalo);
     }
     if (typeInput.value === 'flat') {
-      priceInput.setAttribute('min', 1000);
-      priceInput.setAttribute('placeholder', 1000);
+      priceInput.setAttribute('min', minPrices.flat);
+      priceInput.setAttribute('placeholder', minPrices.flat);
     }
     if (typeInput.value === 'house') {
-      priceInput.setAttribute('min', 5000);
-      priceInput.setAttribute('placeholder', 5000);
+      priceInput.setAttribute('min', minPrices.house);
+      priceInput.setAttribute('placeholder', minPrices.house);
     }
     if (typeInput.value === 'palace') {
-      priceInput.setAttribute('min', 10000);
-      priceInput.setAttribute('placeholder', 10000);
+      priceInput.setAttribute('min', minPrices.palace);
+      priceInput.setAttribute('placeholder', minPrices.palace);
     }
   }
 
