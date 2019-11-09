@@ -1,3 +1,4 @@
+
 'use strict';
 
 (function () {
@@ -26,25 +27,25 @@
   }
 
 
-  function onSuccessEscPress() {
-    if (window.util.isEscPressed) {
-      closeSuccess();
-    }
-  }
-  // не понимаю почему не работает закрытие на esc, хотя в errorMessage работает
   function showSuccessMessage() {
-    var successMessage = document.querySelector('.success');
-    if (successMessage) {
-      successMessage.classList.remove('hidden');
-    } else {
-      var successElement = successTemplate.cloneNode(true);
-      document.addEventListener('keydown', onSuccessEscPress);
-      mainBlock.appendChild(successElement);
-    }
-  }
+    var successElement = successTemplate.cloneNode(true);
 
-  function closeSuccess() {
-    document.querySelector('.success').classList.add('hidden');
+    mainBlock.appendChild(successElement);
+
+    function onSuccessEscPress() {
+      if (window.util.isEscPressed) {
+        closeSuccess();
+      }
+    }
+
+    function closeSuccess() {
+      successElement.remove();
+      document.removeEventListener('keydown', onSuccessEscPress);
+    }
+
+    document.addEventListener('keydown', onSuccessEscPress);
+    successElement.addEventListener('click', closeSuccess);
+    document.activeElement.blur();
   }
 
   window.message = {
